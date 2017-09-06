@@ -6,8 +6,7 @@ from django.utils.text import slugify
 
 
 class Tag(models.Model):
-	name = models.CharField(max_length=50)	 	
-
+	name = models.CharField(max_length=50)
 	def __str__(self):
 		return self.name
 
@@ -17,7 +16,7 @@ class Post(models.Model):
 	author = models.ForeignKey(User, related_name="posts", on_delete=models.CASCADE)
 	published_date_time = models.DateTimeField(auto_now_add=True)
 	header_image = models.CharField(max_length=300, null=True, blank=True)
-	tags = models.ManyToManyField(Tag, related_name="posts")
+	tags = models.ManyToManyField(Tag, related_name="posts", null=True, blank=True)
 	slug = models.SlugField(null=True, blank=True)
 
 	def __str__(self):
