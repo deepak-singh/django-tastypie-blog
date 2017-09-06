@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils.text import slugify
+
 # Create your models here.
 
 
@@ -16,9 +18,17 @@ class Post(models.Model):
 	published_date_time = models.DateTimeField(auto_now_add=True)
 	header_image = models.CharField(max_length=300, null=True, blank=True)
 	tags = models.ManyToManyField(Tag, related_name="posts")
+	slug = models.SlugField(null=True, blank=True)
 
 	def __str__(self):
 		return self.title
+
+	def save(self, *args, **kwargs):
+		# For automatic slug generation.
+		if not self.slug:
+			self.slug = slugify(self.title)[:50]
+
+		return super(Post, self).save(*args, **kwargs)	
 
 class Comment(models.Model):
 	body = models.CharField(max_length=300)
