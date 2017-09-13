@@ -1,9 +1,10 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.text import slugify
+from django.db.models import signals
+from tastypie.models import create_api_key
 
-# Create your models here.
-
+signals.post_save.connect(create_api_key, sender=User)
 
 class Tag(models.Model):
 	name = models.CharField(max_length=50)
@@ -16,7 +17,7 @@ class Post(models.Model):
 	author = models.ForeignKey(User, related_name="posts", on_delete=models.CASCADE)
 	published_date_time = models.DateTimeField(auto_now_add=True)
 	header_image = models.CharField(max_length=300, null=True, blank=True)
-	tags = models.ManyToManyField(Tag, related_name="posts", null=True, blank=True)
+	tags = models.ManyToManyField(Tag, related_name="posts")
 	slug = models.SlugField(null=True, blank=True)
 
 	def __str__(self):

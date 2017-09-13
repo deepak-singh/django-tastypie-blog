@@ -20,6 +20,7 @@ from blog.api import *
 
 v1_api = Api(api_name='v1')
 v1_api.register(PostResource())
+v1_api.register(UserResource())
 v1_api.register(TagResource())
 
 urlpatterns = [
