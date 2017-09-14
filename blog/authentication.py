@@ -5,4 +5,4 @@ class CreateUpdateApiKeyAuthentication(ApiKeyAuthentication):
 		if request.method == "GET":
 			return True
 		else:
-			return super(AnonymousPostAuthentication, self).is_authenticated(request, **kwargs)
+			return super(CreateUpdateApiKeyAuthentication, self).is_authenticated(request, **kwargs)

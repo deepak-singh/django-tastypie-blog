@@ -20,7 +20,7 @@ class UserResource(ModelResource):
 		resource_name = 'user'
 		authentication = Authentication()
 		authorization = Authorization()
-		fields = ['username', 'first_name', 'last_name', 'email']
+		fields = ['username', 'first_name', 'last_name', 'email', 'last_login']
 
 	def obj_create(self, bundle, request=None, **kwargs):
 		try:
@@ -82,13 +82,17 @@ class TagResource(ModelResource):
 
 class PostResource(ModelResource):
 	author = fields.ForeignKey(UserResource, 'author')
-	comments = fields.ToManyField(CommentResource, 'comments')
-	tags = fields.ToManyField(TagResource, 'tags')
+	comments = fields.ToManyField(CommentResource, 'comments', null=True, blank=True)
+	tags = fields.ToManyField(TagResource, 'tags', null=True, blank=True)
 	class Meta:
 		queryset = Post.objects.all()
 		resource_name = 'post'
 		authentication = CreateUpdateApiKeyAuthentication()
 		authorization = Authorization()
+		always_return_data = True
 
+	def hydrate(self, bundle):
+		bundle.data['author'] = bundle.request.user
+		return bundle
 
 	
