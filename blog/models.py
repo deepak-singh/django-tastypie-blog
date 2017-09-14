@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.utils.text import slugify
 from django.db.models import signals
 from tastypie.models import create_api_key
+import random
 
 signals.post_save.connect(create_api_key, sender=User)
 
@@ -26,7 +27,7 @@ class Post(models.Model):
 	def save(self, *args, **kwargs):
 		# For automatic slug generation.
 		if not self.slug:
-			self.slug = slugify(self.title)[:50]
+			self.slug = slugify(self.title)[:50] + str(random.randint(0, 99999999))
 
 		return super(Post, self).save(*args, **kwargs)	
 
