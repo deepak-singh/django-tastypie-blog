@@ -25,7 +25,7 @@ SECRET_KEY = 'y4q&jhb@@mbkv(**=_-659kw9%190dln)c4(**vlba6t&-$l45'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['blog-tastypie.herokuapp.com' ]
 
 
 # Application definition
