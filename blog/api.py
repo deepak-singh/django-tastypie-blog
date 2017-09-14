@@ -95,4 +95,8 @@ class PostResource(ModelResource):
 		bundle.data['author'] = bundle.request.user
 		return bundle
 
+	def dehydrate(self, bundle):
+		bundle.data['author_name'] = bundle.request.user.first_name	
+		return bundle
+
 	
