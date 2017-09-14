@@ -1,6 +1,6 @@
 from tastypie.resources import ModelResource
 from tastypie.authentication import Authentication
-from blog.authentication import CreateUpdateApiKeyAuthentication
+from blog.authentication import WriteWithoutKeyAuthentication, ReadWithoutKeyAuthentication
 from tastypie.authorization import Authorization
 from django.conf.urls import url
 from tastypie.utils import trailing_slash
@@ -12,14 +12,14 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from tastypie.exceptions import BadRequest
 from django.db import IntegrityError
-
+from blog.authorization import UserAuhtorization, PostAuthorization
 
 class UserResource(ModelResource):
 	class Meta:
 		queryset = User.objects.all()
 		resource_name = 'user'
-		authentication = Authentication()
-		authorization = Authorization()
+		authentication = WriteWithoutKeyAuthentication()
+		authorization = UserAuhtorization()
 		fields = ['username', 'first_name', 'last_name', 'email', 'last_login']
 
 	def obj_create(self, bundle, request=None, **kwargs):
@@ -68,7 +68,7 @@ class CommentResource(ModelResource):
 	class Meta:
 		queryset = Comment.objects.all()
 		resource_name = 'comment'
-		authentication = CreateUpdateApiKeyAuthentication()
+		authentication = ReadWithoutKeyAuthentication()
 		authorization = Authorization()
 
 
@@ -77,7 +77,7 @@ class TagResource(ModelResource):
 	class Meta: 
 		queryset = Tag.objects.all()
 		resource_name = 'tag'
-		authentication = CreateUpdateApiKeyAuthentication()
+		authentication = ReadWithoutKeyAuthentication()
 		authorization = Authorization()	    
 
 class PostResource(ModelResource):
@@ -87,8 +87,8 @@ class PostResource(ModelResource):
 	class Meta:
 		queryset = Post.objects.all()
 		resource_name = 'post'
-		authentication = CreateUpdateApiKeyAuthentication()
-		authorization = Authorization()
+		authentication = ReadWithoutKeyAuthentication()
+		authorization = PostAuthorization()
 		always_return_data = True
 
 	def hydrate(self, bundle):

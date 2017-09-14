@@ -1,8 +1,17 @@
 from tastypie.authentication import ApiKeyAuthentication
 
-class CreateUpdateApiKeyAuthentication(ApiKeyAuthentication):
+class ReadWithoutKeyAuthentication(ApiKeyAuthentication):
 	def is_authenticated(self, request, **kwargs):
 		if request.method == "GET":
 			return True
 		else:
-			return super(CreateUpdateApiKeyAuthentication, self).is_authenticated(request, **kwargs)
+			return super(ReadWithoutKeyAuthentication, self).is_authenticated(request, **kwargs)
+
+
+class WriteWithoutKeyAuthentication(ApiKeyAuthentication):
+	def is_authenticated(self, request, **kwargs):
+		if request.method == "GET":
+			return super(WriteWithoutKeyAuthentication, self).is_authenticated(request, **kwargs)
+		else:
+			return True
+
