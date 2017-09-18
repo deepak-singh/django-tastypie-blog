@@ -15,6 +15,7 @@ from django.db import IntegrityError
 from blog.authorization import UserAuhtorization, PostAuthorization
 
 class UserResource(ModelResource):
+	# TO DO: Add some username and password validations
 	class Meta:
 		queryset = User.objects.all()
 		resource_name = 'user'
@@ -85,7 +86,7 @@ class PostResource(ModelResource):
 	comments = fields.ToManyField(CommentResource, 'comments', null=True, blank=True)
 	tags = fields.ToManyField(TagResource, 'tags', null=True, blank=True)
 	class Meta:
-		queryset = Post.objects.all()
+		queryset = Post.objects.order_by('-published_date_time').all()
 		resource_name = 'post'
 		authentication = ReadWithoutKeyAuthentication()
 		authorization = PostAuthorization()
@@ -99,4 +100,3 @@ class PostResource(ModelResource):
 		bundle.data['author_name'] = bundle.obj.author.first_name	
 		return bundle
 
-	
